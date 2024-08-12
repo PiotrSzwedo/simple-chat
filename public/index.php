@@ -4,7 +4,7 @@
         $dirs = [
             '/../controller/',
             '/../generator/',
-            '/../interface/',
+            '/../interfaces/',
             '/../router/',
             '/../service/',
         ];

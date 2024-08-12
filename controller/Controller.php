@@ -1,15 +1,17 @@
 <?php 
 
-abstract class Controller{
+abstract class Controller extends PageGenerator{
     public function __construct($action, $parameters){
         if(empty($action)){
             $this->default();
         }else{
 
-            if (method_exists($this, $action)){
-                $reflectionMethod = new ReflectionMethod(get_class($this), $action);
+            if (!method_exists($this, $action)){
+                $this->error404();
+                return;
             }
-
+            
+            $reflectionMethod = new ReflectionMethod(get_class($this), $action);
             $requiredParams = $reflectionMethod->getNumberOfRequiredParameters();
             $params = $reflectionMethod->getNumberOfParameters();
 
@@ -27,9 +29,10 @@ abstract class Controller{
     }
 
     public function default(){
+        $this->error404();
     }
 
     private function error404(){
-
+        echo "error 404";
     }
 }
