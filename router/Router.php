@@ -6,7 +6,8 @@ class Router{
     protected $parameters;
 
     public function __construct(){
-
+        $this->praseUri();
+        $this->loadModule();
     }
 
     public function praseUri(){
@@ -21,8 +22,7 @@ class Router{
 
     public function loadModule()
     {
-        $this->action = str_replace("-", "_", $this->action);
-
+        
         $controller = $this->controller;
 
         if (class_exists(ucfirst($controller), true) || class_exists($controller, true) || class_exists(strtolower($controller), true))

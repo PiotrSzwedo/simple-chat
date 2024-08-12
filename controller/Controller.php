@@ -27,7 +27,6 @@ abstract class Controller{
     }
 
     public function default(){
-
     }
 
     private function error404(){
