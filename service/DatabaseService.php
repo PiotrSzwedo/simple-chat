@@ -1,0 +1,24 @@
+<?php 
+
+class DatabaseService{
+
+    private mysqli $db;
+    
+    public function __construct()
+    {
+        $this->db = new mysqli("localhost","root","","chat");
+    }
+
+    public function execute($sql){
+        $result = $this->db->query($sql);
+
+        if (!empty($result)) {
+
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+
+            return $rows;
+        }
+    }
+}
