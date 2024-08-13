@@ -6,7 +6,7 @@ abstract class Controller extends PageGenerator{
     public function __construct($action, $parameters){
         parent::__construct();
 
-        $this->description = $this->description = (new ConvertService)->convertToStringByKey($this->database->execute("SELECT name, element FROM description"), "name", "element")[0];
+        $this->description = $this->description = (new ConvertService)->convertToStringByKey($this->database->get("SELECT name, element FROM description"), "name", "element")[0];
         
         if(empty($action)){
             $this->default();

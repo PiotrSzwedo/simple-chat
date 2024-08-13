@@ -9,7 +9,7 @@ class DatabaseService{
         $this->db = new mysqli("localhost","root","","chat");
     }
 
-    public function execute($sql){
+    public function get($sql){
         $result = $this->db->query($sql);
 
         if (!empty($result)) {
@@ -20,5 +20,9 @@ class DatabaseService{
 
             return $rows;
         }
+    }
+
+    public function execute($sql){
+        $result = $this->db->query($sql);
     }
 }
