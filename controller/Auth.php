@@ -11,6 +11,7 @@ class Auth extends Controller{
             
             if ($_POST["action"] === "login"){
                 if ($authService->login($email, $password)){
+                    header("Location: /");
                     return;
                 }
             }else if ($_POST["action"] === "register"){
@@ -21,6 +22,7 @@ class Auth extends Controller{
         }
         
         $auth = new HTMLElement("auth", []);
+        
         $this->addTextToElement($auth, [
             "button" => $this->description["auth-login-button"],
             "button2" => $this->description["auth-register-button"], 
