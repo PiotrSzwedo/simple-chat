@@ -7,12 +7,15 @@ class PageGenerator{
     public function __construct(){
         $this->database = new DatabaseService();
     }
-    public function generatePage($body, $style = null, $scripts = null, $header = null, $footer = true, $nav = true){
+    public function generatePage($body, array $style = array(), array $scripts = array(), $header = null, $footer = true, $nav = true){
         $index = new HTMLElement("index", []);
 
         if ($body){
             $index->addKid("body", $body);
         }
+
+        $index->addKid("style", $this->generateStyles($style));
+        $index->addKid("script", $this->generateScript($scripts));
 
         echo $index->render();
     }
@@ -21,5 +24,31 @@ class PageGenerator{
         foreach ($texts as $key=>$text){
             $element->addKid($key, new HTMLElement("element", ["element" => $text]));
         }
+    }
+
+    public function generateStyles($arrayOfStyleFiles){
+        $arrayOfStyleFiles[] = "default";
+
+        return $this->generateHTMLFromArray($arrayOfStyleFiles, "style", "style");
+    }
+    
+    public function generateScript($arrayOfScriptsFilesNames){
+        $arrayOfScriptsFilesNames[] = "nav";
+
+        return $this->generateHTMLFromArray($arrayOfScriptsFilesNames, "script", "js");
+    }
+
+    private function generateHTMLFromArray($array, $templateName, $filedName){
+        foreach ($array as $filed){
+
+            if (is_array($filed)){
+                $filed = implode($filed);
+            }
+
+            $element = new HTMLElement($templateName, [$filedName => $filed]);
+            $elements[] = ["element" => $element->render()];
+        }
+
+        return new HTMLMultiElement("element", $elements);
     }
 }

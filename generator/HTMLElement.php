@@ -33,7 +33,7 @@ class HTMLElement implements Renderable{
     {
         $this->renderKids();
         $generator = new HTMLGenerator($this->template, $this->data);
-        $generator->loadTemplate();
+        $generator->loadTemplate($this->template);
         return $generator->render();
     }
 }

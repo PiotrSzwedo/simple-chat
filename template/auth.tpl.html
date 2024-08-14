@@ -1,5 +1,5 @@
 <div class="auth-center">
-    <div>
+    <div id="auth-container">
         <form class="open" action="<!--action-->" method="<!--method-->">
             <input type="hidden" name="action" value="login" readonly>
             <div class="auth-div">
@@ -9,11 +9,14 @@
             <div class="auth-div">
                 <label><!--password--></label>
                 <div>
-                    <img src="/upload/open-eye.svg" alt="open eye">
+                    <img onclick="showPassword(this.parentElement)" src="/upload/open-eye.svg" alt="open eye">
                     <input type="password" name="password" required>
                 </div>
             </div>
             <input type="submit" value="<!--button-->">
+            <div class="auth-div">
+                <p onclick="switchPanel()"><!--button2--></p>
+            </div>
         </form>
         <form action="<!--action-->" method="<!--method-->">
             <input type="hidden" name="action" value="register" readonly>
@@ -28,11 +31,14 @@
             <div class="auth-div">
                 <label><!--password--></label>
                 <div>
-                    <img src="/upload/open-eye.svg" alt="open eye">
+                    <img onclick="showPassword(this.parentElement)" src="/upload/open-eye.svg" alt="open eye">
                     <input type="password" name="password" required>
                 </div>
             </div>
             <input type="submit" value="<!--button2-->">
+            <div class="auth-div">
+                <p onclick="switchPanel()"><!--button--></p>
+            </div>
         </form>
     </div>
 </div>

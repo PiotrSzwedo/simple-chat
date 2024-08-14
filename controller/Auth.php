@@ -32,6 +32,6 @@ class Auth extends Controller{
 
         $this->addTextToElement($auth, ["method" => "post", "action" => $_SERVER["REQUEST_URI"]]);
 
-        echo $this->generatePage($auth);
+        echo $this->generatePage($auth, array(), ["auth"]);
     }
 }

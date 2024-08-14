@@ -5,6 +5,7 @@
 }
 
 * {
+    font-family: "Roboto", sans-serif;
     margin: 0px;
     padding: 0px;
     list-style-type: none;
@@ -29,17 +30,19 @@
 
 .auth-center form.open{
     position: relative;
-    display: block;
     padding: 20px;
     background: var(--white);
     border-radius: 20px;
     animation: auth-view ease-in-out 0.8s;
+    display: flex;
+    flex-direction: column;
 }
 
 .auth-center form.close{
     position: absolute;
-    transform: translateY(-100vh);
-    display: block;
+    transform: translateY(-500vh);
+    display: flex;
+    flex-direction: column;
     padding: 20px;
     background: var(--white);
     border-radius: 20px;
