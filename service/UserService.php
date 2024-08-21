@@ -1,6 +1,6 @@
 <?php 
 
-class AuthService{
+class UserService{
 
     private $db;
 
@@ -31,13 +31,21 @@ class AuthService{
         return false;
     }
 
-    public function findByEmail($email){
+    public function findByEmail($email): ?array{
         $user = $this->db->get("SELECT * FROM user where email = '$email'");
 
-        if ($user){
-            return $user[0];
-        }else{
-            return null;
-        }
+        return $user[0] ?: null;
+    }
+
+    public function getIdByEmail($email): ?int{
+        $user = $this->findByEmail($email);
+            
+        return $user["id"] ?: null;
+    }
+
+    public function findById($id): ?array{
+        $user = $this->db->get("SELECT email, name FROM user where id = '$id'");
+
+        return $user[0] ?: null;
     }
 }

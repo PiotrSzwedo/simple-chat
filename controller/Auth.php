@@ -2,7 +2,8 @@
 
 class Auth extends Controller{
     public function default(){
-        $authService = new AuthService();
+        $authService = new UserService();
+        $session = new SessionService();
         
         if (!empty($_POST["action"])){
             
@@ -11,6 +12,7 @@ class Auth extends Controller{
             
             if ($_POST["action"] === "login"){
                 if ($authService->login($email, $password)){
+                    $session->createSession($authService->getIdByEmail($email), "userId");
                     header("Location: /");
                     return;
                 }
