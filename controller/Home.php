@@ -10,6 +10,8 @@ class Home extends Controller{
             return;
         }
 
-        var_dump((new UserService())->findById($session));
+        $chat = new HTMLElement("home", []);
+
+        $this->generatePage($chat);
     }
 }

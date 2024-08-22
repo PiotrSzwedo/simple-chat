@@ -14,6 +14,7 @@
 
 body{
     background-image: url(/upload/15151445.webp);
+    background-size: cover;
 }
 /* authorization  */
 
@@ -24,7 +25,6 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-size: cover;
 }
 
 .auth-center form{
@@ -112,4 +112,36 @@ body{
         position: relative;
         transform: translateY(-100vh);
     }
+}
+
+/* home */
+
+.chatWindow{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    margin: 15px;
+}
+
+.chatWindow .messages{
+    backdrop-filter: blur(0.2rem);
+    box-shadow: -4px 4px 5px #33333340;
+    height: 100%;
+    background: #ffffff5e;
+    width: 100%;
+    max-width: 18.75rem;
+    border-radius: 20px;
+    margin-right: 2px;
+    flex: 3;
+}
+
+.chatWindow .chatValue{
+    backdrop-filter: blur(0.2rem);
+    box-shadow: 4px 4px 5px #33333340;
+    border: 0.1rem var(--white) solid;
+    height: 100%;
+    background: #ffffff5e;
+    width: 100%;
+    border-radius: 20px;
+    flex: 6;
 }
