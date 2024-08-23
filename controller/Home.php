@@ -3,15 +3,13 @@
 class Home extends Controller{
     
     public function default(){
-        $session = (new SessionService())->getSessionData("userId");
+        $userId = (new SessionService())->getSessionData("userId");
 
-        if (!$session){
+        if (!$userId){
             header("Location: /auth");
             return;
+        }else{
+            header("Location: /chat");
         }
-
-        $chat = new HTMLElement("home", []);
-
-        $this->generatePage($chat);
     }
 }

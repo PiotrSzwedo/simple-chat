@@ -3,6 +3,7 @@
     --light-blue: #499cff;
     --white: #ffff;
     --dark-blue: #00479b;
+    --gray: #bbbaba;
 }
 
 * {
@@ -144,4 +145,48 @@ body{
     width: 100%;
     border-radius: 20px;
     flex: 6;
+}
+
+.chatWindow .messages .conversation{
+    margin: 5px 0px;
+    cursor: pointer;
+    background: var(--white);
+    padding: 7px 10px;
+    border-radius: 5px;
+    transition: .15s ease-in-out;
+}
+
+.chatWindow .messages .conversation:hover{
+    background: var(--gray);
+    transition: .15s ease-in-out;
+}
+
+.chatWindow .messages .conversation span{
+    color: #00000045;
+}
+
+.chatWindow .chatValue .messDiv{
+    display: flex;
+}
+
+.chatWindow .chatValue .messDiv.my{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.chatWindow .chatValue .mess{
+    background: var(--white);
+    padding: 5px;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.chatWindow .chatValue .mess.my{
+    background: var(--dark-blue);
+    color: var(--white);
+    text-align: right;
+}
+
+.chatWindow .chatValue .con{
+    display: none;
 }

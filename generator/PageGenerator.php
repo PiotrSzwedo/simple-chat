@@ -51,4 +51,17 @@ class PageGenerator{
 
         return new HTMLMultiElement("element", $elements);
     }
+
+    public function connectElements(array $arrayOfHtmlElements){
+        if (!empty($arrayOfHtmlElements)){
+
+            foreach ($arrayOfHtmlElements as $element) {
+                $elements[] = ["element" => $element->render()];
+            }
+
+            $content = new HTMLMultiElement('element', $elements);
+
+            return $content;
+        }
+    }
 }
