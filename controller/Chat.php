@@ -2,28 +2,7 @@
 
 class Chat extends Controller{
     public function default(){
-        $userId = (new SessionService())->getSessionData("userId");
-
-        if (!$userId){
-            header("Location: /auth");
-            return;
-        }
-
-        $chat = new HTMLElement("home", []);
-
-        
-        $messages = (new MessageService())->getConversations($userId);
-        $messages = (new ConvertService)->convertArrayByKey($messages, "id");
-        $users = [];
-
-        foreach ($messages as $message){
-            if ($message[0]["id"]){
-                $users[] = new HTMLElement("conversation", ["name" => $message[0]["name"], "id" => $message[0]["id"]]);
-            }
-        }
-        
-        $chat->addKid("users", $this->connectElements($users));
-        $this->generatePage($chat, [], ["mess"]);
+        $this->conversation();
     }
 
     private function generateConversations($messages){
@@ -57,6 +36,13 @@ class Chat extends Controller{
     public function conversation($id = null){
         $userId = (new SessionService())->getSessionData("userId");
 
+        if ($_POST && $_POST["message"] && $id){
+
+            $attachment = $_POST ?: 0;
+
+            (new MessageService())->send($userId, $id, $_POST["message"], $attachment);
+        }
+
         if (!$userId){
             header("Location: /auth");
             return;
@@ -89,9 +75,16 @@ class Chat extends Controller{
         $chat = new HTMLElement("home", []);
         
         $chat->addKid("users", $this->connectElements($users));
-        
+
         if ($id != null){
             $chat->addKid("conversations", $this->connectElements($conversations));
+            $sendingPanel = new HTMLElement("sendingPanel", []);
+
+            $this->addTextToElement($sendingPanel, ["action" => $_SERVER["REQUEST_URI"]]);
+
+            $chat->addKid("sendingPanel", $sendingPanel);
+        }else{
+            $this->addTextToElement($chat, ["style" => "display: none"]);
         }
 
         $this->generatePage($chat, [], ["mess"]);

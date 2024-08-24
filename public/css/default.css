@@ -136,6 +136,12 @@ body{
     flex: 3;
 }
 
+.chatWindow #chatValue{
+    width: 100%;
+    height: 100%;
+    flex: 6;
+}
+
 .chatWindow .chatValue{
     backdrop-filter: blur(0.2rem);
     box-shadow: 4px 4px 5px #33333340;
@@ -144,7 +150,6 @@ body{
     background: #ffffff5e;
     width: 100%;
     border-radius: 20px;
-    flex: 6;
 }
 
 .chatWindow .messages .conversation{
@@ -189,4 +194,38 @@ body{
 
 .chatWindow .chatValue .con{
     display: none;
+}
+
+.chatWindow .chatValue .sendingPanel{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--dark-blue);
+    border-radius: 0px 0px 20px 20px;
+    padding: 20px;
+    display: flex;
+}
+
+.chatWindow .chatValue .sendingPanel input{
+    width: 100%;
+    outline: none;
+    border-radius: 5px;
+    border: 0.1rem solid var(--blue);
+    padding: 4px 10px;
+}
+
+.chatWindow .chatValue .sendingPanel form {
+    display: flex;
+    width: 100%;
+}
+
+.chatWindow .chatValue .sendingPanel form button{
+    background: none;
+    border: none;
+    display: flex;
+}
+
+.chatWindow .chatValue .sendingPanel form button svg{
+    fill: var(--light-blue);
 }
