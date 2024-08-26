@@ -14,6 +14,8 @@ class DatabaseService{
 
         if (!empty($result)) {
 
+            $rows = [];
+
             while ($row = $result->fetch_assoc()) {
                 $rows[] = $row;
             }
@@ -24,5 +26,10 @@ class DatabaseService{
 
     public function execute($sql){
         $result = $this->db->query($sql);
+
+        if ($result)
+            return true;
+        
+        return false;
     }
 }

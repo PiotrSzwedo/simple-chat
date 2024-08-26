@@ -76,6 +76,12 @@ class MessageService{
     public function send($senderId, $recipientId, $message, $attachment = 0){
         $data = date("yy-m-d H:i:s");
 
+        if (!$this->conversationExist($senderId, $recipientId)){
+            if (!$this->createConversation($senderId, $recipientId))
+                return;
+        }
+
+
         $this->db->execute("
             UPDATE `message` 
             SET `last_msg` = '$data'
@@ -85,49 +91,69 @@ class MessageService{
         ");
 
         $this->db->execute("
-    INSERT INTO `chat`.`conversation` 
-    (`mess_id`, `body`, `attachment`, `user1_send`, `user1_read`, `user2_read`) 
-    VALUES (
-        (
-            SELECT id 
-            FROM chat.message 
-            WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
-            OR (user2 = '$senderId' AND user1 = '$recipientId')
-            LIMIT 1
-        ),
-        '$message', 
-        '$attachment', 
-        (IF (
-            (SELECT user1 FROM chat.message 
-            WHERE id = (
-                SELECT id 
-                FROM chat.message 
-                WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
+            INSERT INTO `chat`.`conversation` 
+            (`mess_id`, `body`, `attachment`, `user1_send`, `user1_read`, `user2_read`) 
+            VALUES (
+                (
+                    SELECT id 
+                    FROM chat.message 
+                    WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
                     OR (user2 = '$senderId' AND user1 = '$recipientId')
-                LIMIT 1)
-            ) = '$senderId', 1, 0)
-        ),
-        (IF (
-            (SELECT user1 FROM chat.message 
-            WHERE id = (
-                SELECT id 
-                FROM chat.message 
-                WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
-                    OR (user2 = '$senderId' AND user1 = '$recipientId')
-                LIMIT 1)
-            ) = '$senderId', 1, 0)
-        ),
-        (IF (
-            (SELECT user2 FROM chat.message 
-            WHERE id = (
-                SELECT id 
-                FROM chat.message 
-                WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
-                    OR (user2 = '$senderId' AND user1 = '$recipientId')
-                LIMIT 1)
-            ) = '$senderId', 1, 0)
-        )
-    );
+                    LIMIT 1
+                ),
+                '$message', 
+                '$attachment', 
+                (IF (
+                    (SELECT user1 FROM chat.message 
+                    WHERE id = (
+                        SELECT id 
+                        FROM chat.message 
+                        WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
+                            OR (user2 = '$senderId' AND user1 = '$recipientId')
+                        LIMIT 1)
+                    ) = '$senderId', 1, 0)
+                ),
+                (IF (
+                    (SELECT user1 FROM chat.message 
+                    WHERE id = (
+                        SELECT id 
+                        FROM chat.message 
+                        WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
+                            OR (user2 = '$senderId' AND user1 = '$recipientId')
+                        LIMIT 1)
+                    ) = '$senderId', 1, 0)
+                ),
+                (IF (
+                    (SELECT user2 FROM chat.message 
+                    WHERE id = (
+                        SELECT id 
+                        FROM chat.message 
+                        WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
+                            OR (user2 = '$senderId' AND user1 = '$recipientId')
+                        LIMIT 1)
+                    ) = '$senderId', 1, 0)
+                )
+            );
         ");
+    }
+
+    public function conversationExist($user1, $user2) :bool{
+        $conversation = $this->db->get("          
+        SELECT * 
+        from message
+        WHERE 
+        user1 = '$user1' AND user2 = '$user2' OR 
+        user2 = '$user1' AND user1 = '$user2';
+        ");
+
+        if ($conversation){
+            return true;
+        }
+        
+        return false;
+    }
+
+    public function createConversation($user1, $user2){
+        return $this->db->execute("INSERT INTO `chat`.`message` (`user1`, `user2`) VALUES ('$user1', '$user2');");
     }
 }
