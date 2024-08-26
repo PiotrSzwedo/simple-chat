@@ -1,12 +1,16 @@
 <div class="auth-center">
     <div class="chatWindow">
-        <div class="messages">
+        <div class="messages <!--msgShow-->">
             <div style="margin: 15px 2px;">
                 <!--users-->
             </div>
         </div>
         <div id="chatValue">
-            <div class="chatValue" style="<!--style-->">
+            <div class="chatValue " style="<!--style-->">
+                <div class="chatHeader">
+                    <h3><!--userName--><span>#<!--userId--></span></h3>
+                    <button onclick="showMessages()"  id="showUsers">></button>
+                </div>
                 <div style="margin: 15px 2px;">
                     <!--conversations-->
                     <!--sendingPanel-->

@@ -44,8 +44,16 @@ class UserService{
     }
 
     public function findById($id): ?array{
-        $user = $this->db->get("SELECT email, name FROM user where id = '$id'");
+        $user = $this->db->get("SELECT * FROM user where id = '$id'");
 
         return $user[0] ?: null;
+    }
+
+    public function getName($id){
+        $user = $this->findById($id);
+
+        $nameWithId = $user["name"];
+
+        return $nameWithId ?: null;
     }
 }

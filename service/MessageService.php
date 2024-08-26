@@ -39,15 +39,33 @@ class MessageService{
                 u.name,
                 m.user1,
                 m.user2,
-                m.last_msg
+                m.last_msg,
+                c.read_status
             FROM 
-                chat.message m
-            RIGHT JOIN
                 chat.user u
+            JOIN 
+                chat.message m
                 ON (m.user1 = '$userId' AND m.user2 = u.id) 
                 OR (m.user2 = '$userId' AND m.user1 = u.id)
-            WHERE
-                m.user1 = '$userId' OR m.user2 = '$userId'
+            JOIN 
+                (
+                    SELECT 
+                        c.mess_id,
+                        IF(me.user1 = '$userId',
+                            MIN(c.user1_read),
+                            MIN(c.user2_read)
+                        ) AS read_status
+                    FROM 
+                        chat.conversation c
+                    JOIN 
+                        chat.message me
+                        ON c.mess_id = me.id
+                    WHERE 
+                        me.user1 = '$userId' OR me.user2 = '$userId'
+                    GROUP BY 
+                        c.mess_id
+                ) AS c
+                ON c.mess_id = m.id
             ORDER BY 
                 m.last_msg DESC;
         ");
@@ -67,17 +85,49 @@ class MessageService{
         ");
 
         $this->db->execute("
-        INSERT INTO `chat`.`conversation` 
-        (`mess_id`, `body`, `attachment`, `user1_send`) 
-        VALUES (
-            (SELECT id FROM chat.message 
+    INSERT INTO `chat`.`conversation` 
+    (`mess_id`, `body`, `attachment`, `user1_send`, `user1_read`, `user2_read`) 
+    VALUES (
+        (
+            SELECT id 
+            FROM chat.message 
             WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
-                OR (user2 = '$senderId' AND user1 = '$recipientId')
-            LIMIT 1),
-            '$message', 
-            '$attachment', 
-            (IF((SELECT user1 FROM chat.message WHERE id = (SELECT id FROM chat.message WHERE (user1 = '$senderId' AND user2 = '$recipientId') OR (user2 = '$senderId' AND user1 = '$recipientId'))) = '$senderId', 1, 0))
-        );
+            OR (user2 = '$senderId' AND user1 = '$recipientId')
+            LIMIT 1
+        ),
+        '$message', 
+        '$attachment', 
+        (IF (
+            (SELECT user1 FROM chat.message 
+            WHERE id = (
+                SELECT id 
+                FROM chat.message 
+                WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
+                    OR (user2 = '$senderId' AND user1 = '$recipientId')
+                LIMIT 1)
+            ) = '$senderId', 1, 0)
+        ),
+        (IF (
+            (SELECT user1 FROM chat.message 
+            WHERE id = (
+                SELECT id 
+                FROM chat.message 
+                WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
+                    OR (user2 = '$senderId' AND user1 = '$recipientId')
+                LIMIT 1)
+            ) = '$senderId', 1, 0)
+        ),
+        (IF (
+            (SELECT user2 FROM chat.message 
+            WHERE id = (
+                SELECT id 
+                FROM chat.message 
+                WHERE (user1 = '$senderId' AND user2 = '$recipientId') 
+                    OR (user2 = '$senderId' AND user1 = '$recipientId')
+                LIMIT 1)
+            ) = '$senderId', 1, 0)
+        )
+    );
         ");
     }
 }

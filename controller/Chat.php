@@ -67,7 +67,11 @@ class Chat extends Controller{
         // generating users list
         foreach ($recipients as $recipient){
             if ($recipient[0]["id"]){
-                $users[] = new HTMLElement("conversation", ["name" => $recipient[0]["name"], "id" => $recipient[0]["id"]]);
+                if($recipient[0]["read_status"]){
+                    $users[] = new HTMLElement("conversation", ["name" => $recipient[0]["name"], "id" => $recipient[0]["id"], "class" => "not"]);
+                }else{
+                    $users[] = new HTMLElement("conversation", ["name" => $recipient[0]["name"], "id" => $recipient[0]["id"]]);
+                }
             }
         }
         
@@ -77,16 +81,21 @@ class Chat extends Controller{
         $chat->addKid("users", $this->connectElements($users));
 
         if ($id != null){
+
             $chat->addKid("conversations", $this->connectElements($conversations));
             $sendingPanel = new HTMLElement("sendingPanel", []);
 
             $this->addTextToElement($sendingPanel, ["action" => $_SERVER["REQUEST_URI"]]);
 
             $chat->addKid("sendingPanel", $sendingPanel);
+
+            $userName = (new UserService())->getName($id);
+            $this->addTextToElement($chat, ["userName" => $userName, "userId" => $id]);
         }else{
-            $this->addTextToElement($chat, ["style" => "display: none"]);
+            $this->addTextToElement($chat, ["style" => "display: none", "msgShow" => "show"]);
         }
 
         $this->generatePage($chat, [], ["mess"]);
     }
+
 }

@@ -152,7 +152,23 @@ body{
     border-radius: 20px;
 }
 
+.chatWindow .messages .conversation.not::before{
+    position: absolute;
+    content: '';
+    width: 5%;
+    height: 3vh;
+    min-width: 10px;
+    min-height: 13px;
+    top: -0.1rem;
+    left: -0.1rem;
+    background: url(/upload/bell-ring.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    max-width: 5%;
+}
+
 .chatWindow .messages .conversation{
+    position: relative;
     margin: 5px 0px;
     cursor: pointer;
     background: var(--white);
@@ -228,4 +244,53 @@ body{
 
 .chatWindow .chatValue .sendingPanel form button svg{
     fill: var(--light-blue);
+}
+
+.chatWindow .chatValue .chatHeader{
+    border-radius: 20px 20px 0px 0px;
+    background: var(--dark-blue);
+    padding: 0.4rem 0.4rem;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
+
+.chatWindow .chatValue .chatHeader h3{
+    color: var(--white);
+}
+
+.chatWindow .chatValue .chatHeader h3 span{
+    color: var(--gray);
+}
+
+#showUsers{
+    display: none;
+}
+
+@media (max-width: 650px) {
+    .chatWindow .messages{
+        background: #0069e6f2;
+        position: absolute;
+        z-index: 1;
+        max-width: none;
+        right: 100%;
+        left: -999rem;
+        padding: 15px;
+        width: auto;
+        transition: .25s;
+    }
+
+    .chatWindow .messages.show{
+        right: -2px;
+        left: 0;
+        transition: .25s;
+    }
+
+    #showUsers{
+        display: block;
+    }
+
+    .chatWindow{
+        margin: 0px;
+    }
 }

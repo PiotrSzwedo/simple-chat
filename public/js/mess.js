@@ -1,13 +1,15 @@
-function show(id) {
+async function show(id) {
     // change url whiteout reload page
     const newUrl = '/chat/conversation/' + id;
     history.pushState({ path: newUrl }, '', newUrl);
 
     // reload only div, that have id = chatValue
-    reloadElementById(newUrl, "chatValue");
+    await reloadElementById(newUrl, "chatValue");
+    await reloadElementById(newUrl, "msg");
+    showMessages();
 }
 
-function sendMsg(link) {
+async function sendMsg(link) {
     // Download form data
     const form = document.getElementById('messageForm');
     const messageInput = document.getElementById('messageInput');
@@ -16,13 +18,13 @@ function sendMsg(link) {
     const formData = new FormData(form);
 
     // Send data
-    fetch(link, {
+    await fetch(link, {
         method: 'POST',
         body: formData
-    })
+    });
     messageInput.value = '';
 
-    reloadElementById(link, "chatValue");
+    await reloadElementById(window.location.href, "chatValue");
 
     const elementsFromForm = form.querySelectorAll('input, textarea, select');
 
@@ -35,18 +37,27 @@ function sendMsg(link) {
     });
 }
 
-function reloadElementById(url, elementId){
-    fetch(url)
-    .then(response => response.text())  // Get page as html
-    .then(data => {
-        // Prase html to DOM (Document Object Model) object
+async function reloadElementById(url, elementId){
+    try {
+        const response = await fetch(url);
+        const data = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, 'text/html');
-
-        // find html for div
         const newContent = doc.getElementById(elementId).innerHTML;
-        // set content of div 
         document.getElementById(elementId).innerHTML = newContent;
-    })
-    .catch(error => console.error('Error', error));
+    } catch (error) {
+        console.error('Error', error);
+    }
+}
+
+const triggerElement = document.getElementById('showUsers'); // Replace with the actual selector
+
+function showMessages(){
+    const messageElement = document.querySelector('.messages');
+
+    if (messageElement.classList.contains("show")){
+        messageElement.classList.remove("show");
+    } else {
+        messageElement.classList.add("show");
+    }
 }
