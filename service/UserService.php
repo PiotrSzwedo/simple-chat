@@ -7,7 +7,7 @@ class UserService{
     public function __construct(){
         $this->db = new DatabaseService();
     }
-    public function login($email, $password){
+    public function login($email, $password) :bool{
         $user = $this->findByEmail($email);
 
         if ($user != null){
@@ -17,7 +17,7 @@ class UserService{
         return false;
     }
 
-    public function register($email, $name, $password){
+    public function register($email, $name, $password) :bool{
         var_dump($name);
         $user = $this->findByEmail($email);
 

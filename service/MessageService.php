@@ -32,7 +32,7 @@ class MessageService{
         return $messages ?: null;
     }
 
-    public function getConversations($userId){
+    public function getConversations($userId) :?array{
         $messages = $this->db->get("
             SELECT 
                 u.id,
@@ -73,7 +73,7 @@ class MessageService{
         return $messages ?: null;
     }
 
-    public function send($senderId, $recipientId, $message, $attachment = 0){
+    public function send($senderId, $recipientId, $message, $attachment = 0) :void{
         $data = date("yy-m-d H:i:s");
 
         if (!$this->conversationExist($senderId, $recipientId)){

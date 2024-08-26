@@ -46,7 +46,7 @@ async function reloadElementById(url, elementId){
         const newContent = doc.getElementById(elementId).innerHTML;
         document.getElementById(elementId).innerHTML = newContent;
     } catch (error) {
-        console.error('Error', error);
+        return;
     }
 }
 
