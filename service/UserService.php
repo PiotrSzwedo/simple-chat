@@ -24,8 +24,7 @@ class UserService{
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         if ($user == null){
-            $this->db->execute("INSERT INTO user (email, password, name) VALUES ('$email', '$hashedPassword', '$name')");
-            return true;
+            return $this->db->execute("INSERT INTO user (email, password, name) VALUES ('$email', '$hashedPassword', '$name')");
         }
 
         return false;
