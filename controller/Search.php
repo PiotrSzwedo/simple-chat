@@ -14,7 +14,7 @@ class Search extends Controller{
     public function default(){
         $search = new HTMLElement("search", []);
 
-        if (key_exists("letter", $_POST)){
+        if (key_exists("letter", $_POST) && !empty($_POST["letter"])){
             $users = $this->userService->findByLetter($_POST["letter"]);
 
             if (is_array($users)){

@@ -66,7 +66,17 @@ class UserService
 
     public function findByLetter($letter): ?array
     {
-        $users = $this->db->get("SELECT * FROM chat.user WHERE name LIKE '%$letter%'");
+        $users = $this->db->get("SELECT *
+            FROM user
+            WHERE name LIKE '%$letter%'
+            ORDER BY 
+                CASE 
+                    WHEN LOCATE('s', name) = 1 THEN 0  
+                    WHEN LOCATE('s', name) = 2 THEN 1 
+                    ELSE 2                       
+                END,
+                name;
+        ");
 
         return $users ?: null;
     }

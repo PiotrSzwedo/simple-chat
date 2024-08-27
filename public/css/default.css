@@ -19,6 +19,14 @@ body{
     background-repeat: no-repeat;
     height: 100vh;
 }
+
+.flexCenter{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* authorization  */
 
 .auth-center{
@@ -299,3 +307,22 @@ body{
 
 /* search  */
 
+.flexCenter .searchDiv{
+    background: #e1e1e1;
+    padding: 10px;
+    width: 90%;
+    border-radius: 20px;
+    height: 70%;
+}
+
+.flexCenter .searchDiv form input{
+    border: 2px solid var(--blue);
+    border-radius: 20px;
+    padding: 10px;
+    outline: none;
+    width: calc(100% - 24px);
+}
+
+.flexCenter .searchDiv .searchResult{
+    padding: 10px;
+}

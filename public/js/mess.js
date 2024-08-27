@@ -4,8 +4,8 @@ async function show(id) {
     history.pushState({ path: newUrl }, '', newUrl);
 
     // reload only div, that have id = chatValue
-    await reloadElementById(newUrl, "chatValue");
-    await reloadElementById(newUrl, "msg");
+    await reloadElement(newUrl, "#chatValue");
+    await reloadElement(newUrl, ".messages");
     showMessages();
 }
 
@@ -24,7 +24,8 @@ async function sendMsg(link) {
     });
     messageInput.value = '';
 
-    await reloadElementById(window.location.href, "chatValue");
+    await reloadElement(window.location.href, "#chatValue");
+    await reloadElement(window.location.href, ".messages");
 
     const elementsFromForm = form.querySelectorAll('input, textarea, select');
 
@@ -37,14 +38,14 @@ async function sendMsg(link) {
     });
 }
 
-async function reloadElementById(url, elementId){
+async function reloadElement(url, elementId){
     try {
         const response = await fetch(url);
         const data = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, 'text/html');
-        const newContent = doc.getElementById(elementId).innerHTML;
-        document.getElementById(elementId).innerHTML = newContent;
+        const newContent = doc.querySelector(elementId).innerHTML;
+        document.querySelector(elementId).innerHTML = newContent;
     } catch (error) {
         return;
     }
