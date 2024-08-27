@@ -16,6 +16,8 @@
 body{
     background-image: url(/upload/15151445.webp);
     background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
 }
 /* authorization  */
 
@@ -115,7 +117,7 @@ body{
     }
 }
 
-/* home */
+/* chat */
 
 .chatWindow{
     display: flex;
@@ -167,7 +169,7 @@ body{
     max-width: 5%;
 }
 
-.chatWindow .messages .conversation{
+.conversation{
     position: relative;
     margin: 5px 0px;
     cursor: pointer;
@@ -177,12 +179,12 @@ body{
     transition: .15s ease-in-out;
 }
 
-.chatWindow .messages .conversation:hover{
+.conversation:hover{
     background: var(--gray);
     transition: .15s ease-in-out;
 }
 
-.chatWindow .messages .conversation span{
+.conversation span{
     color: #00000045;
 }
 
@@ -294,3 +296,6 @@ body{
         margin: 0px;
     }
 }
+
+/* search  */
+

@@ -2,6 +2,18 @@
 
 class Chat extends Controller
 {
+
+    protected MessageService $messageService;
+
+    protected UserService $userService;
+
+    public function __construct($action, $parameters){
+        $this->userService = new UserService();
+        $this->messageService = new MessageService();
+
+        parent::__construct($action, $parameters);
+    }
+
     public function default()
     {
         $this->conversation();
@@ -63,7 +75,7 @@ class Chat extends Controller
 
             $attachment = $_POST ?: 0;
 
-            (new MessageService())->send($userId, $id, $_POST["message"], $attachment);
+            $this->messageService->send($userId, $id, $_POST["message"], $attachment);
         }
 
         if (!$userId) {
@@ -72,7 +84,7 @@ class Chat extends Controller
         }
 
         // downloading users from database
-        $recipients = (new MessageService())->getConversations($userId);
+        $recipients = $this->messageService->getConversations($userId);
         $recipients = (new ConvertService)->convertArrayByKey($recipients, "id");
 
         // creating array
@@ -81,7 +93,7 @@ class Chat extends Controller
 
         // downloading chats from database 
         if ($id != null) {
-            $messages = (new MessageService())->getAll($userId, $id);
+            $messages = $this->messageService->getAll($userId, $id);
             $conversations[] = $this->generateConversations($messages);
         }
 
@@ -99,7 +111,7 @@ class Chat extends Controller
 
             $chat->addKid("sendingPanel", $sendingPanel);
 
-            $userName = (new UserService())->getName($id);
+            $userName = $this->userService->getName($id);
             $this->addTextToElement($chat, ["userName" => $userName, "userId" => $id]);
         } else {
             $this->addTextToElement($chat, ["style" => "display: none", "msgShow" => "show"]);

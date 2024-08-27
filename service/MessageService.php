@@ -153,7 +153,7 @@ class MessageService{
         return false;
     }
 
-    public function createConversation($user1, $user2){
-        return $this->db->execute("INSERT INTO `chat`.`message` (`user1`, `user2`) VALUES ('$user1', '$user2');");
+    public function createConversation($user1, $user2) :bool{
+        return $this->db->execute("INSERT INTO `message` (`user1`, `user2`) VALUES ('$user1', '$user2');");
     }
 }
