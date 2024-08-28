@@ -22,7 +22,10 @@ class UserService
 
     public function register($email, $name, $password): bool
     {
-        var_dump($name);
+        $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+        $email = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
+        $password = htmlspecialchars($password, ENT_QUOTES, 'UTF-8');
+
         $user = $this->findByEmail($email);
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -38,7 +41,11 @@ class UserService
     {
         $user = $this->db->get("SELECT * FROM user where email = '$email'");
 
-        return $user[0] ?: null;
+        if (key_exists(0 , $user)){
+            return $user[0] ?: null;
+        }
+
+        return null;
     }
 
     public function getIdByEmail($email): ?int
@@ -52,7 +59,11 @@ class UserService
     {
         $user = $this->db->get("SELECT * FROM user where id = '$id'");
 
-        return $user[0] ?: null;
+        if (key_exists(0 , $user)){
+            return $user[0] ?: null;
+        }
+
+        return null;
     }
 
     public function getName($id)

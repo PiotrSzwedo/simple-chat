@@ -22,13 +22,14 @@ async function sendMsg(link) {
         method: 'POST',
         body: formData
     });
-    messageInput.value = '';
 
+    messageInput.value = '';
+    
     await reloadElement(window.location.href, "#chatValue");
     await reloadElement(window.location.href, ".messages");
-
+    
     const elementsFromForm = form.querySelectorAll('input, textarea, select');
-
+    
     elementsFromForm.forEach(field => {
         if (field.type === 'checkbox' || field.type === 'radio') {
             field.checked = false;
@@ -36,19 +37,8 @@ async function sendMsg(link) {
             field.value = '';
         }
     });
-}
-
-async function reloadElement(url, elementId){
-    try {
-        const response = await fetch(url);
-        const data = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(data, 'text/html');
-        const newContent = doc.querySelector(elementId).innerHTML;
-        document.querySelector(elementId).innerHTML = newContent;
-    } catch (error) {
-        return;
-    }
+    
+    messageInput.focus();
 }
 
 const triggerElement = document.getElementById('showUsers'); // Replace with the actual selector

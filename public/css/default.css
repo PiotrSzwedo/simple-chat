@@ -80,6 +80,10 @@ body{
     background: #00000012;
 }
 
+.auth-center form.error .auth-div input{
+    border: 0.5px red solid;
+}
+
 .auth-center form .auth-div div img{
     outline: none;
     border: none;
@@ -186,6 +190,15 @@ body{
     border-radius: 5px;
     transition: .15s ease-in-out;
 }
+.conversation img{
+    width: 3rem;
+    border-radius: 50%;
+}
+
+.conversation p{
+    display: flex;
+    align-items: flex-start;
+}
 
 .conversation:hover{
     background: var(--gray);
@@ -219,7 +232,14 @@ body{
 }
 
 .chatWindow .chatValue .con{
+    height: 80vh;
+    overflow: auto;
     display: none;
+}
+
+.con::-webkit-scrollbar{
+    opacity: 0;
+    width: 1px;
 }
 
 .chatWindow .chatValue .sendingPanel{

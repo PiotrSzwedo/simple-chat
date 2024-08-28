@@ -37,6 +37,7 @@ class MessageService{
             SELECT 
                 u.id,
                 u.name,
+                u.photo,
                 m.user1,
                 m.user2,
                 m.last_msg,
@@ -155,5 +156,42 @@ class MessageService{
 
     public function createConversation($user1, $user2) :bool{
         return $this->db->execute("INSERT INTO `message` (`user1`, `user2`) VALUES ('$user1', '$user2');");
+    }
+
+    public function refreshReadStatus($loginUserId, $user2){
+        $ids = $this->db->get("
+            select c.id from chat.message m join 
+            chat.conversation c on c.mess_id = m.id where
+            (( m.user1 = '$loginUserId' AND m.user2 = '$user2') OR ( m.user2 = '$loginUserId' AND m.user1 = '$user2'));
+        ");
+
+        $where = "WHERE (`user1` = '$loginUserId' AND `user2` = '$user2') 
+                            OR (`user1` = '$user2' AND `user2` = '$loginUserId')
+                        ORDER BY `id` DESC
+                        LIMIT 1";
+
+        foreach ($ids as $id){
+            $id = $id["id"];
+
+            $this->db->execute("
+                UPDATE `chat`.`conversation` 
+                SET
+                    `user1_read` = IF(
+                        (SELECT `user1` 
+                        FROM `chat`.`message`
+                        $where) = '$loginUserId', 
+                        '1', 
+                        `user1_read`
+                    ),
+                    `user2_read` = IF(
+                        (SELECT `user2` 
+                        FROM `chat`.`message` 
+                        $where) = '$loginUserId', 
+                        '1', 
+                        `user2_read`
+                    )
+                WHERE `id` = '$id';
+            ");
+        }
     }
 }

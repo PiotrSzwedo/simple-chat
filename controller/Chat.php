@@ -56,10 +56,10 @@ class Chat extends Controller
         // generating users list
         foreach ($recipients as $recipient) {
             if ($recipient[0]["id"]) {
-                if ($recipient[0]["read_status"]) {
-                    $users[] = new HTMLElement("conversation", ["name" => $recipient[0]["name"], "id" => $recipient[0]["id"], "class" => "not"]);
+                if (!$recipient[0]["read_status"]) {
+                    $users[] = new HTMLElement("conversation", ["name" => $recipient[0]["name"], "id" => $recipient[0]["id"], "class" => "not", "photo" => $recipient[0]["photo"]]);
                 } else {
-                    $users[] = new HTMLElement("conversation", ["name" => $recipient[0]["name"], "id" => $recipient[0]["id"]]);
+                    $users[] = new HTMLElement("conversation", ["name" => $recipient[0]["name"], "id" => $recipient[0]["id"], "photo" => $recipient[0]["photo"]]);
                 }
             }
         }
@@ -69,54 +69,52 @@ class Chat extends Controller
 
     public function conversation($id = null)
     {
+        $chat = new HTMLElement("home", []);
         $userId = (new SessionService())->getSessionData("userId");
-
-        if ($_POST && $_POST["message"] && $id) {
-
-            $attachment = $_POST ?: 0;
-
-            $this->messageService->send($userId, $id, $_POST["message"], $attachment);
-        }
-
+    
         if (!$userId) {
             header("Location: /auth");
             return;
         }
-
-        // downloading users from database
+    
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["message"]) && !empty($_POST["message"]) && $id) {
+            $this->messageService->send($userId, $id, $_POST["message"]);
+        }
+    
         $recipients = $this->messageService->getConversations($userId);
-        $recipients = (new ConvertService)->convertArrayByKey($recipients, "id");
 
-        // creating array
-        $conversations = [];
-        $users = $this->generateUsersChats($recipients);
+        if (is_array($recipients) && key_exists("id", $recipients[0])){
+            
+            $recipients = (new ConvertService())->convertArrayByKey($recipients, "id");
 
-        // downloading chats from database 
-        if ($id != null) {
-            $messages = $this->messageService->getAll($userId, $id);
-            $conversations[] = $this->generateConversations($messages);
+            $conversations = [];
+            $users = $this->generateUsersChats($recipients);
+        
+            $chat->addKid("users", $this->connectElements($users));
+        
+            if ($id != null) {
+                $this->messageService->refreshReadStatus($userId, $id);
+
+                $messages = $this->messageService->getAll($userId, $id);
+
+                if ($messages) {
+                    $conversations[] = $this->generateConversations($messages);
+                    $chat->addKid("conversations", $this->connectElements($conversations));
+                }
+            } 
         }
 
-        // generate page
-        $chat = new HTMLElement("home", []);
-
-        $chat->addKid("users", $this->connectElements($users));
-
-        if ($id != null) {
-
-            $chat->addKid("conversations", $this->connectElements($conversations));
-            $sendingPanel = new HTMLElement("sendingPanel", []);
-
-            $this->addTextToElement($sendingPanel, ["action" => $_SERVER["REQUEST_URI"]]);
-
-            $chat->addKid("sendingPanel", $sendingPanel);
-
+        $sendingPanel = new HTMLElement("sendingPanel", []);
+        $this->addTextToElement($sendingPanel, ["action" => $_SERVER["REQUEST_URI"]]);
+        
+        if ($id != null){
             $userName = $this->userService->getName($id);
             $this->addTextToElement($chat, ["userName" => $userName, "userId" => $id]);
-        } else {
+            $chat->addKid("sendingPanel", $sendingPanel);
+        }else{
             $this->addTextToElement($chat, ["style" => "display: none", "msgShow" => "show"]);
         }
-
-        $this->generatePage($chat, [], ["mess"]);
+        
+        $this->generatePage($chat, [], ["mess", "reload"]);
     }
 }
