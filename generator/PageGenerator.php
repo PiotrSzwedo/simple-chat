@@ -7,7 +7,7 @@ class PageGenerator{
     public function __construct(){
         $this->database = new DatabaseService();
     }
-    public function generatePage($body, array $style = array(), array $scripts = array(), $header = null, $footer = true, $nav = true){
+    public function generatePage($body, array $style = array(), array $scripts = array(), $nav = false, $footer = false){
         $index = new HTMLElement("index", []);
 
         if ($body){

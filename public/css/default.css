@@ -142,7 +142,7 @@ body{
     backdrop-filter: blur(0.2rem);
     box-shadow: -4px 4px 5px #33333340;
     height: 100%;
-    background: #ffffff5e;
+    background: #e1e1e1;
     width: 100%;
     max-width: 18.75rem;
     border-radius: 20px;
@@ -291,6 +291,14 @@ body{
 
 .chatWindow .chatValue .chatHeader h3 span{
     color: var(--gray);
+}
+
+.chatWindow .messages .data{
+    border-radius: 20px 20px 0px 0px;
+    padding: 0.4rem 0.4rem;
+    border-bottom: 1px solid var(--white);
+    display: flex;
+    justify-content: space-around;
 }
 
 #showUsers{

@@ -115,6 +115,8 @@ class Chat extends Controller
             $this->addTextToElement($chat, ["style" => "display: none", "msgShow" => "show"]);
         }
         
+        $this->addTextToElement($chat, ["my-photo" => $this->userService->getPhoto($userId)]);
+
         $this->generatePage($chat, [], ["mess", "reload"]);
     }
 }

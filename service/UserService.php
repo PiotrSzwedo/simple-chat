@@ -52,6 +52,9 @@ class UserService
     {
         $user = $this->findByEmail($email);
 
+
+        if (!key_exists("id", $user)) return null;
+
         return $user["id"] ?: null;
     }
 
@@ -70,7 +73,19 @@ class UserService
     {
         $user = $this->findById($id);
 
-        $nameWithId = $user["name"];
+        if ($user){
+            $nameWithId = $user["name"];
+        }
+
+        return $nameWithId ?: null;
+    }
+
+    public function getPhoto($id){
+        $user = $this->findById($id);
+
+        if ($user){
+            $nameWithId = $user["photo"];
+        }
 
         return $nameWithId ?: null;
     }

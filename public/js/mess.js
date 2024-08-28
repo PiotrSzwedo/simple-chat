@@ -5,7 +5,7 @@ async function show(id) {
 
     // reload only div, that have id = chatValue
     await reloadElement(newUrl, "#chatValue");
-    await reloadElement(newUrl, ".messages");
+    await reloadElement(newUrl, "#users");
     showMessages();
 }
 
@@ -26,7 +26,7 @@ async function sendMsg(link) {
     messageInput.value = '';
     
     await reloadElement(window.location.href, "#chatValue");
-    await reloadElement(window.location.href, ".messages");
+    await reloadElement(window.location.href, "#users");
     
     const elementsFromForm = form.querySelectorAll('input, textarea, select');
     

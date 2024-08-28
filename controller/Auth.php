@@ -2,22 +2,9 @@
 
 class Auth extends Controller{
     public function default(){
-        $this->generateAuthForm(false, "");
-    }
-
-    public function error($page = "login"){
-        if ($page = "register"){
-            $this->generateAuthForm(true, "error");
-        }else{
-            $this->generateAuthForm(false, "error");
-        }
-    }
-
-    private function generateAuthForm($register, $class){
-        $auth = new HTMLElement("auth", []);
         $authService = new UserService();
         $session = new SessionService();
-        
+
         if ($_SERVER['REQUEST_METHOD'] === "POST" && !empty($_POST["action"])){
             
             $email = $_POST["email"];
@@ -29,18 +16,26 @@ class Auth extends Controller{
                     header("Location: /");
                     return;
                 }else{
-                    header("Location: /auth/error/login");
+                    $this->generateAuthForm(false, "error");
+                    return;
                 }
             }else if ($_POST["action"] === "register"){
                 if ($authService->register($email, $_POST["name"], $password)){
                     header("Location: /auth");
                     return;
                 }else{
-                    header("Location: /auth/error/register");
+                    $this->generateAuthForm(true, "error");
+                    return;
                 }
             }
         }
 
+        $this->generateAuthForm(false, "");
+    }
+
+    private function generateAuthForm($register, $class){
+        $auth = new HTMLElement("auth", []);
+        
         if ($register){
             $this->addTextToElement($auth, ["open2" => "open $class"]);
         }else{
