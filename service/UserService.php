@@ -92,6 +92,7 @@ class UserService
 
     public function findByLetter($letter): ?array
     {
+        $letter = htmlspecialchars($letter, ENT_QUOTES, 'UTF-8');
         $users = $this->db->get("SELECT *
             FROM user
             WHERE name LIKE '%$letter%'
