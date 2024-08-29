@@ -301,6 +301,15 @@ body{
     justify-content: space-around;
 }
 
+.chatWindow .messages .data a{
+    width: 2vw;
+    min-width: 24px;
+}
+
+.chatWindow .messages .data img{
+    width: 100%;
+}
+
 #showUsers{
     display: none;
 }

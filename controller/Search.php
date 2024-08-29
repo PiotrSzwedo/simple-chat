@@ -26,6 +26,6 @@ class Search extends Controller{
             $this->addTextToElement($search, ["value" => $_POST["letter"]]);
         }
 
-        echo $this->generatePage($search);
+        echo $this->generatePage($search, [], ["search", "reload"]);
     }
 }
