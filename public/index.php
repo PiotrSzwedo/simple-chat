@@ -6,7 +6,7 @@
             '/../generator/',
             '/../interfaces/',
             '/../router/',
-            '/../service/',
+            '/../service/'
         ];
     
         foreach ($dirs as $dir) {

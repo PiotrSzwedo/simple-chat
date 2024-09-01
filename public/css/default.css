@@ -4,6 +4,7 @@
     --white: #ffff;
     --dark-blue: #00479b;
     --gray: #bbbaba;
+    --black: rgb(0, 0, 0);
 }
 
 * {
@@ -362,4 +363,94 @@ body{
 
 .flexCenter .searchDiv .searchResult{
     padding: 10px;
+}
+
+/* profile panel */
+
+.profile {
+    background: var(--white);
+    width: 99%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
+.profile .profile-panel{
+    background: var(--blue);
+    flex: 1 1 230px;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 30px 0px 10px;
+}
+
+.profile .profile-panel ul li{
+    border-bottom: 1px solid var(--white);
+    padding: 2px 0px;
+}
+
+.profile .profile-panel ul li a{
+    display: block;
+    width: 100%;
+    padding: 2px 0px;
+    color: var(--white);
+    text-decoration: none;
+    transition: 33.333ms linear;
+}
+
+.profile .profile-panel ul li a:hover{
+    background: var(--gray);
+    transition: 33.333ms linear;
+}
+
+.profile .profileHome{
+    display: flex;
+    justify-content: center;
+}
+
+.profile .profileHome img{
+    border-radius: 50%;
+    width: 20vw;
+    min-width: 150px;
+}
+
+.profile .profileHome #profileImg{
+    cursor: pointer;
+    display: block;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 20vw;
+    min-width: 150px;
+    position: relative;
+}
+
+.profile .profileHome #profileImg:hover::after{
+    height: 100%;
+    transition: .55s;
+    background-size: 90%;
+}
+
+.profile .profileHome #profileImg::after{
+    position: absolute;
+    display: block;
+    content: '';
+    background-color: #0000006e;
+    background-image: url(/upload/camera.svg);
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    height: 20%;
+    transition: .55s;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.profile .profileHome h1,
+.profile .profileHome h2,
+.profile .profileHome h3,
+.profile .profileHome h4,
+.profile .profileHome h5,
+.profile .profileHome h6{
+    text-align: center;
 }
