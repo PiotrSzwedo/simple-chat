@@ -4,8 +4,8 @@ class MessageService{
 
     private $db;
 
-    public function __construct(){
-        $this->db = new DatabaseService();
+    public function __construct($database){
+        $this->db = $database;
     }
 
     public function getAll($userId, $user2Id){

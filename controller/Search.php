@@ -2,15 +2,6 @@
 
 class Search extends Controller{
 
-    private UserService $userService;
-
-    public function __construct($action, $parameters){
-        $this->userService = new UserService();
-
-        parent::__construct($action, $parameters);
-    }
-
-
     public function default(){
         $search = new HTMLElement("search", []);
 

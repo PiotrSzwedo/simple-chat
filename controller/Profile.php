@@ -1,20 +1,11 @@
 <?php 
 
 class Profile extends Controller{
-    private $userId;
-    private $userService;
-
-    public function __construct($action, $parameters){
-        $this->userService = new UserService();
-        $this->userId = (new SessionService())->getSessionData("userId");
-
-        parent::__construct($action, $parameters);
-    }
 
     public function default(){
         $user = [];
 
-        $user[0] = $this->userService->findById($this->userId);
+        $user[0] = $this->userService->findById($this->sessionService->getSessionData("userId"));
         
         $profileHome = new HTMLMultiElement("profileHome", $user);
 

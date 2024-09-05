@@ -4,8 +4,8 @@ class PageGenerator{
 
     protected DatabaseService $database;
 
-    public function __construct(){
-        $this->database = new DatabaseService();
+    public function __construct($database){
+        $this->database = $database;
     }
     public function generatePage($body, array $style = array(), array $scripts = array(), $nav = false, $footer = false){
         $index = new HTMLElement("index", []);

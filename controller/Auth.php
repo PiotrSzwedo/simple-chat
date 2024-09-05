@@ -2,8 +2,6 @@
 
 class Auth extends Controller{
     public function default(){
-        $authService = new UserService();
-        $session = new SessionService();
 
         if ($_SERVER['REQUEST_METHOD'] === "POST" && !empty($_POST["action"])){
             
@@ -11,8 +9,8 @@ class Auth extends Controller{
             $password = $_POST["password"];
             
             if ($_POST["action"] === "login"){
-                if ($authService->login($email, $password)){
-                    $session->createSession($authService->getIdByEmail($email), "userId");
+                if ($this->userService->login($email, $password)){
+                    $this->sessionService->createSession($this->userService->getIdByEmail($email), "userId");
                     header("Location: /");
                     return;
                 }else{
@@ -20,7 +18,7 @@ class Auth extends Controller{
                     return;
                 }
             }else if ($_POST["action"] === "register"){
-                if ($authService->register($email, $_POST["name"], $password)){
+                if ($this->userService->register($email, $_POST["name"], $password)){
                     header("Location: /auth");
                     return;
                 }else{
@@ -41,7 +39,6 @@ class Auth extends Controller{
         }else{
             $this->addTextToElement($auth, ["open" => "open $class"]);
         }
-        
         
         $this->addTextToElement($auth, [
             "button" => $this->description["auth-login-button"],

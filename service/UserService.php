@@ -5,9 +5,9 @@ class UserService
 
     private $db;
 
-    public function __construct()
+    public function __construct($database)
     {
-        $this->db = new DatabaseService();
+        $this->db = $database;
     }
     public function login($email, $password): bool
     {

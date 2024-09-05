@@ -19,4 +19,4 @@
 
 spl_autoload_register('loader');
 
-$router = new Router();
+$router = new Router(new DatabaseService("localhost", "root", "", "chat"));

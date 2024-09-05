@@ -1,44 +1,73 @@
-<?php 
-
-abstract class Controller extends PageGenerator{
+<?php
+abstract class Controller extends PageGenerator
+{
     protected $description;
+    protected MessageService $messageService;
+    protected UserService $userService;
+    protected SessionService $sessionService;
+    protected ConvertService $convertService;
 
-    public function __construct($action, $parameters){
-        parent::__construct();
+    public function __construct(
+        string $action,
+        array $parameters,
+        UserService $userService,
+        MessageService $messageService,
+        SessionService $sessionService,
+        ConvertService $convertService,
+        DatabaseService $database
+    ) {
+        $this->userService = $userService;
+        $this->messageService = $messageService;
+        $this->sessionService = $sessionService;
+        $this->convertService = $convertService;
 
-        $this->description = (new ConvertService)->convertToStringByKey($this->database->get("SELECT name, element FROM description"), "name", "element")[0];
-        
-        if(empty($action)){
-            $this->default();
-        }else{
-
-            if (!method_exists($this, $action)){
-                $this->error404();
-                return;
-            }
-            
-            $reflectionMethod = new ReflectionMethod(get_class($this), $action);
-            $requiredParams = $reflectionMethod->getNumberOfRequiredParameters();
-            $params = $reflectionMethod->getNumberOfParameters();
-
-            if (
-                    $reflectionMethod->isPublic() && 
-                    count($parameters) >= $requiredParams &&
-                    count($parameters) <= $params
-                ) {
-                $this->$action(...$parameters);
-            }
-            else{
-                $this->error404();
-            }
+        try {
+            $descriptionData = $database->get("SELECT name, element FROM description");
+            $this->description = $convertService->convertToStringByKey($descriptionData, "name", "element")[0];
+        } catch (Exception $e) {
+            $this->description = 'Default description';
+            error_log($e->getMessage());
         }
+
+        $this->inventFunction($action, $parameters);
+
+        parent::__construct($database);
     }
 
-    public function default(){
+    public function default()
+    {
         $this->error404();
     }
 
-    private function error404(){
-        echo "error 404";
+    private function error404(): void
+    {
+        echo "Error 404";
+    }
+
+    private function inventFunction(string $action, array $parameters): void
+    {
+        if (empty($action)) {
+            $this->default();
+            return;
+        }
+
+        if (!method_exists($this, $action)) {
+            $this->error404();
+            return;
+        }
+
+        $reflectionMethod = new ReflectionMethod($this, $action);
+        $requiredParams = $reflectionMethod->getNumberOfRequiredParameters();
+        $params = $reflectionMethod->getNumberOfParameters();
+
+        if (
+            $reflectionMethod->isPublic() &&
+            count($parameters) >= $requiredParams &&
+            count($parameters) <= $params
+        ) {
+            $reflectionMethod->invoke($this, ...$parameters);
+        } else {
+            $this->error404();
+        }
     }
 }

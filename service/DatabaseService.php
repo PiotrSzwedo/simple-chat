@@ -4,9 +4,9 @@ class DatabaseService{
 
     private mysqli $db;
     
-    public function __construct()
+    public function __construct($address, $userName, $password, $dbName, $port = 3306)
     {
-        $this->db = new mysqli("localhost","root","","chat");
+        $this->db = new mysqli($address, $userName, $password, $dbName, $port);
     }
 
     public function get($sql){

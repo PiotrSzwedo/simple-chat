@@ -3,17 +3,6 @@
 class Chat extends Controller
 {
 
-    protected MessageService $messageService;
-
-    protected UserService $userService;
-
-    public function __construct($action, $parameters){
-        $this->userService = new UserService();
-        $this->messageService = new MessageService();
-
-        parent::__construct($action, $parameters);
-    }
-
     public function default()
     {
         $this->conversation();
@@ -70,7 +59,7 @@ class Chat extends Controller
     public function conversation($id = null)
     {
         $chat = new HTMLElement("home", []);
-        $userId = (new SessionService())->getSessionData("userId");
+        $userId = $this->sessionService->getSessionData("userId");
     
         if (!$userId) {
             header("Location: /auth");

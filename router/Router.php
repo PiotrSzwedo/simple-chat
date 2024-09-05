@@ -4,8 +4,10 @@ class Router{
     protected $controller;
     protected $action;
     protected $parameters;
+    protected DatabaseService $db;
 
-    public function __construct(){
+    public function __construct(DatabaseService $database){
+        $this->db = $database;
         $this->praseUri();
         $this->loadModule();
     }
@@ -26,8 +28,20 @@ class Router{
         $controller = $this->controller;
 
         if (class_exists(ucfirst($controller), true) || class_exists($controller, true) || class_exists(strtolower($controller), true))
-            $this->controller = new $controller($this->action, $this->parameters);
+            $this->controller = $this->induceController($controller);
         else
-            $this->controller = new Home($this->action, $this->parameters);
+            $this->controller =  $this->induceController($controller);
+    }
+
+    private function induceController($controllerName){
+        return new $controllerName(
+            $this->action, 
+            $this->parameters, 
+            new UserService($this->db), 
+            new MessageService($this->db), 
+            new SessionService(), 
+            new ConvertService, 
+            $this->db
+        );
     }
 }
