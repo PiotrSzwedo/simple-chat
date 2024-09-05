@@ -30,7 +30,7 @@ class Router{
         if (class_exists(ucfirst($controller), true) || class_exists($controller, true) || class_exists(strtolower($controller), true))
             $this->controller = $this->induceController($controller);
         else
-            $this->controller =  $this->induceController($controller);
+            $this->controller = $this->induceController("Home");
     }
 
     private function induceController($controllerName){
