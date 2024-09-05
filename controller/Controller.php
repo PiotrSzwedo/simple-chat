@@ -29,7 +29,7 @@ abstract class Controller extends PageGenerator
             error_log($e->getMessage());
         }
 
-        $this->inventFunction($action, $parameters);
+        $this->induceFunction($action, $parameters);
 
         parent::__construct($database);
     }
@@ -39,12 +39,12 @@ abstract class Controller extends PageGenerator
         $this->error404();
     }
 
-    private function error404(): void
+    private function error404()
     {
         echo "Error 404";
     }
 
-    private function inventFunction(string $action, array $parameters): void
+    private function induceFunction(string $action, array $parameters): void
     {
         if (empty($action)) {
             $this->default();
@@ -58,12 +58,12 @@ abstract class Controller extends PageGenerator
 
         $reflectionMethod = new ReflectionMethod($this, $action);
         $requiredParams = $reflectionMethod->getNumberOfRequiredParameters();
-        $params = $reflectionMethod->getNumberOfParameters();
+        $allParams = $reflectionMethod->getNumberOfParameters();
 
         if (
             $reflectionMethod->isPublic() &&
             count($parameters) >= $requiredParams &&
-            count($parameters) <= $params
+            count($parameters) <= $allParams
         ) {
             $reflectionMethod->invoke($this, ...$parameters);
         } else {

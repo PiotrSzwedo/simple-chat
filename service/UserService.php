@@ -37,15 +37,15 @@ class UserService
         return false;
     }
 
-    public function findByEmail($email): ?array
+    public function findByEmail($email): array
     {
         $user = $this->db->get("SELECT * FROM user where email = '$email'");
 
         if (key_exists(0 , $user)){
-            return $user[0] ?: null;
+            return $user[0] ?: [];
         }
 
-        return null;
+        return [];
     }
 
     public function getIdByEmail($email): ?int
@@ -58,15 +58,15 @@ class UserService
         return $user["id"] ?: null;
     }
 
-    public function findById($id): ?array
+    public function findById($id): array
     {
         $user = $this->db->get("SELECT * FROM user where id = '$id'");
 
         if (key_exists(0 , $user)){
-            return $user[0] ?: null;
+            return $user[0] ?: [];
         }
 
-        return null;
+        return [];
     }
 
     public function getName($id)
@@ -77,7 +77,7 @@ class UserService
             $nameWithId = $user["name"];
         }
 
-        return $nameWithId ?: null;
+        return $nameWithId ?: "";
     }
 
     public function getPhoto($id){
@@ -87,7 +87,7 @@ class UserService
             $nameWithId = $user["photo"];
         }
 
-        return $nameWithId ?: null;
+        return $nameWithId ?: [];
     }
 
     public function findByLetter($letter): ?array
@@ -98,13 +98,13 @@ class UserService
             WHERE name LIKE '%$letter%'
             ORDER BY 
                 CASE 
-                    WHEN LOCATE('s', name) = 1 THEN 0  
-                    WHEN LOCATE('s', name) = 2 THEN 1 
+                    WHEN LOCATE('$letter', name) = 1 THEN 0  
+                    WHEN LOCATE('$letter', name) = 2 THEN 1 
                     ELSE 2                       
                 END,
                 name;
         ");
 
-        return $users ?: null;
+        return $users ?: [];
     }
 }
