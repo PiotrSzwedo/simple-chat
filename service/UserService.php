@@ -98,8 +98,8 @@ class UserService
             WHERE name LIKE '%$letter%'
             ORDER BY 
                 CASE 
-                    WHEN LOCATE('$letter', name) = 1 THEN 0  
-                    WHEN LOCATE('$letter', name) = 2 THEN 1 
+                    WHEN LOCATE('$letter', name) = 2 THEN 0  
+                    WHEN LOCATE('$letter', name) = 1 THEN 1 
                     ELSE 2                       
                 END,
                 name;

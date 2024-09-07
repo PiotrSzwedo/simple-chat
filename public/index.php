@@ -1,4 +1,6 @@
 <?php
+
+    $db = require_once __DIR__.'/../config/db_conn_config.php';
     function loader($className) 
     {
         $dirs = [
@@ -19,4 +21,6 @@
 
 spl_autoload_register('loader');
 
-$router = new Router(new DatabaseService("localhost", "root", "", "chat"));
+$router = new Router(new DatabaseService(
+    $db["address"], $db["user_name"], $db["user_password"], $db["db_name"], $db["port"]
+));

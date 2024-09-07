@@ -40,7 +40,7 @@ class Router{
             new UserService($this->db), 
             new MessageService($this->db), 
             new SessionService(), 
-            new ConvertService, 
+            new ConvertService(), 
             $this->db
         );
     }

@@ -94,7 +94,6 @@ class Chat extends Controller
         }
 
         $sendingPanel = new HTMLElement("sendingPanel", []);
-        $this->addTextToElement($sendingPanel, ["action" => $_SERVER["REQUEST_URI"]]);
         
         if ($id != null){
             $userName = $this->userService->getName($id);
@@ -104,6 +103,7 @@ class Chat extends Controller
             $this->addTextToElement($chat, ["style" => "display: none", "msgShow" => "show"]);
         }
         
+        $this->addTextToElement($sendingPanel, ["userId" => $id, "senderId" => $userId]);
         $this->addTextToElement($chat, ["my-photo" => $this->userService->getPhoto($userId)]);
 
         $this->generatePage($chat, [], ["mess", "reload"]);

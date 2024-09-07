@@ -9,6 +9,10 @@ class DatabaseService{
         $this->db = new mysqli($address, $userName, $password, $dbName, $port);
     }
 
+    public static function createByConfig($config){
+        
+    }
+
     public function get($sql){
         $result = $this->db->query($sql);
 
