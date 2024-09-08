@@ -1,7 +1,9 @@
 <?php
 
+require_once __DIR__.'/../service/MessageService.php';
+require_once __DIR__.'/../service/DatabaseService.php';
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__.'/../server/WebSocketServer.php';
+require_once __DIR__.'/WebSocketServer.php';
 $db = require_once __DIR__.'/../config/db_conn_config.php';
 $config = require __DIR__ . '/../config/ws_config.php';
 $ssl = require __DIR__ . '/../config/ssl_config.php';
@@ -12,25 +14,12 @@ use Ratchet\WebSocket\WsServer;
 use React\EventLoop\Factory;
 use React\Socket\Server as ReactSocket;
 
+Factory::create();
 
-// Ustawienia serwera
+
 $host = $config['host'];
 $port = $config['port'];
 
-// Opcjonalnie konfiguracja SSL
-$sslContext = null;
-if (!empty($ssl['enabled']) && $ssl['enabled']) {
-    $sslContext = [
-        'ssl' => [
-            'local_cert' => $ssl['cert'],
-            'local_pk' => $ssl['key'],
-            'allow_self_signed' => true,
-            'verify_peer' => false
-        ]
-    ];
-}
-
-// Utwórz serwer WebSocket
 $server = IoServer::factory(
     new HttpServer(
         new WsServer(
@@ -41,8 +30,7 @@ $server = IoServer::factory(
     ),
     $port,
     $host,
-    $sslContext
+    null
 );
 
-// Uruchom serwer
 $server->run();
