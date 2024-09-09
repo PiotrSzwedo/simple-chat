@@ -29,8 +29,7 @@ $server = IoServer::factory(
         )
     ),
     $port,
-    $host,
-    null
+    $host
 );
 
 $server->run();

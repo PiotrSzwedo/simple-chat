@@ -3,7 +3,7 @@
 $config = require_once __DIR__."/../../config/file_upload_config.php";
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    exit('POST request method required');
+    exit('FILES is empty');
 }
 
 if (empty($_FILES)) {
@@ -46,4 +46,5 @@ if ( ! move_uploaded_file($_FILES["image"]["tmp_name"], $destination)) {
     exit("Can't move uploaded file");
 }
 
-echo "File uploaded successfully.";
+http_response_code(200);
+echo "success";

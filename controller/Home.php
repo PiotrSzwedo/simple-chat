@@ -1,14 +1,16 @@
-<?php 
+<?php
 
-class Home extends Controller{
-    
-    public function default(){
+class Home extends Controller
+{
+
+    public function default()
+    {
         $userId = $this->sessionService->getSessionData("userId");
 
-        if (!$userId){
+        if (!$userId) {
             header("Location: /auth");
             return;
-        }else{
+        } else {
             header("Location: /chat");
         }
     }

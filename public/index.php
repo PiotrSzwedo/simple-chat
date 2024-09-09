@@ -21,6 +21,8 @@
 
 spl_autoload_register('loader');
 
+$parsedUrl = explode('/', $_SERVER["REQUEST_URI"]);
+
 $router = new Router(new DatabaseService(
     $db["address"], $db["user_name"], $db["user_password"], $db["db_name"], $db["port"]
 ));
