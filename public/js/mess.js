@@ -18,12 +18,21 @@ function sendToWsServer(userId, message, type, sender) {
 
 ws.onmessage = (jsonData) => {
     const data = JSON.parse(jsonData.data);
-    if (data.type === 'message') {
-        console.log(`Message from user ${data.userId}: ${data.message}`);
+
+    con = document.querySelector(".con");
+
+    con = document.querySelector(".con");
+
+    if (data.sender === myId){
+        styleClass = "my"; 
+    }else{
+        styleClass = ""; 
     }
+
+    con.innerHTML = con.innerHTML + "<div class='messDiv " + styleClass + "'><div class='mess " +  styleClass  + "'> " + data.message + "</div></div>";
 };
 
-ws.onerror = (error) => {
+ws.onerror = (error) => { 
     console.error('WebSocket error:', error);
 };
 
@@ -52,14 +61,6 @@ async function sendMsg() {
     messageInput.value = '';
     
     const elementsFromForm = form.querySelectorAll('input, textarea, select');
-    
-    elementsFromForm.forEach(field => {
-        if (field.type === 'checkbox' || field.type === 'radio') {
-            field.checked = false;
-        } else {
-            field.value = '';
-        }
-    });
     
     messageInput.focus();
 }

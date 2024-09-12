@@ -50,3 +50,4 @@ function setHtml(element, data) {
         console.error('Error in setHtml function:', error);
     }
 }
+    

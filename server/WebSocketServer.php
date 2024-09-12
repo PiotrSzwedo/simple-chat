@@ -25,7 +25,6 @@ class WebSocketServer implements MessageComponentInterface {
 
     public function onMessage(ConnectionInterface $from, $msg) {
         $data = json_decode($msg, true);
-        var_dump($data);
 
         if ($data["type"] == "registerId") {
             if ($this->clients->contains($from)) {
@@ -37,8 +36,8 @@ class WebSocketServer implements MessageComponentInterface {
         }
 
         if (isset($data['userId']) && isset($data['message']) && $data["type"] == "message") {
-            $this->saveMessage($data['userId'], $data['message'], $data["sender"]);
             $this->sendMessage($from, $data);
+            $this->saveMessage($data['userId'], $data['message'], $data["sender"]);
         }
     }
 
@@ -55,17 +54,22 @@ class WebSocketServer implements MessageComponentInterface {
         $conn->close();
     }
 
-    private function sendMessage($from, $data){
+    private function sendMessage($from, $data) {
         foreach ($this->clients as $client) {
             $clientData = $this->clients[$client];
-            if ($clientData['userId'] == $data['userId'] &&
-                $client !== $from &&
+
+            if (($clientData['userId'] == $data['userId'] ||
+                $client === $from) &&
                 $clientData["active"] === true) {
+    
                 $client->send(json_encode([
                     'type' => 'message',
                     'userId' => $data['userId'],
                     'message' => $data['message'],
+                    'sender' => $data['sender'],
                 ]));
+    
+                echo "Wiadomość wysłana do klienta: " . $clientData['userId'] . "\n";
             }
         }
     }
