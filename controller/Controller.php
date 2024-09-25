@@ -6,6 +6,7 @@ abstract class Controller extends PageGenerator
     protected UserService $userService;
     protected SessionService $sessionService;
     protected ConvertService $convertService;
+    protected FileService $fileService;
 
     public function __construct(
         string $action,
@@ -14,12 +15,14 @@ abstract class Controller extends PageGenerator
         MessageService $messageService,
         SessionService $sessionService,
         ConvertService $convertService,
-        DatabaseService $database
+        DatabaseService $database,
+        FileService $fileService
     ) {
         $this->userService = $userService;
         $this->messageService = $messageService;
         $this->sessionService = $sessionService;
         $this->convertService = $convertService;
+        $this->fileService = $fileService;
 
         try {
             $descriptionData = $database->get("SELECT name, element FROM description");

@@ -370,26 +370,31 @@ body{
 .profile {
     background: var(--white);
     width: 99%;
-    height: 100%;
+    height: 90%;
     display: flex;
     flex-wrap: wrap;
     overflow: auto;
+    border-radius: 20px;
 }
 
-.profile .profile-panel{
-    background: var(--blue);
-    flex: 1 1 230px;
+.profile-panel{
     display: flex;
-    flex-direction: column;
     padding: 0px 30px 0px 10px;
 }
 
-.profile .profile-panel ul li{
-    border-bottom: 1px solid var(--white);
-    padding: 2px 0px;
+.profile-panel ul{
+    display: flex;
 }
 
-.profile .profile-panel ul li a{
+.profile-panel ul li{
+    border: 1px solid var(--white);
+    background: var(--dark-blue);
+    margin: 5px;
+    padding: 7px;
+    border-radius: 20px;
+}
+
+.profile-panel ul li a{
     display: block;
     width: 100%;
     padding: 2px 0px;
@@ -398,7 +403,7 @@ body{
     transition: 33.333ms linear;
 }
 
-.profile .profile-panel ul li a:hover{
+.profile-panel ul li:hover{
     background: var(--gray);
     transition: 33.333ms linear;
 }
@@ -453,4 +458,22 @@ body{
 .profile .profileHome h5,
 .profile .profileHome h6{
     text-align: center;
+}
+
+.photoForm{
+    position: absolute;
+    height: 50%;
+    background: var(--white);
+    border: 1px solid var(--blue);
+    border-radius: 20px;
+    padding: 20px;
+    pointer-events: none;
+    transform: scale(0);
+    transition: .55s;
+}
+
+.photoForm.open{
+    pointer-events: all;
+    transform: scale(1);
+    transition: .55s;
 }

@@ -29,6 +29,6 @@ class Profile extends Controller{
 
         $this->addTextToElement($profile, ["profile" => $this->description["profile-profile"], "security" => $this->description["profile-security"], "languages" => $this->description["profile-languages"], "back" => $this->description["profile-back"]]);
 
-        $this->generatePage($profile);
+        $this->generatePage($profile, [], ["profile"]);
     }
 }

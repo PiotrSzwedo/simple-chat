@@ -1,8 +1,15 @@
 <div class="profileHome">
     <div>
-        <a id="profileImg">
+        <a id="profileImg" onclick="showPhotoForm()">
             <img src=<!--photo--> alt="<!--name-->'s profile photo">
         </a>
         <h3><!--name--></h3>
+    </div>
+    <div class="photoForm">
+        <button onclick="showPhotoForm()">X</button>
+        <form action="/php/upload_file.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="wgraj">
+        </form>
     </div>
 </div>

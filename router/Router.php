@@ -5,8 +5,10 @@ class Router{
     protected $action;
     protected $parameters;
     protected DatabaseService $db;
+    protected $fileConfig;
 
-    public function __construct(DatabaseService $database){
+    public function __construct(DatabaseService $database, $fileConfig){
+        $this->fileConfig = $fileConfig;
         $this->db = $database;
         $this->praseUri();
         $this->loadModule();
@@ -41,7 +43,8 @@ class Router{
             new MessageService($this->db), 
             new SessionService(), 
             new ConvertService(), 
-            $this->db
+            $this->db,
+            new FileService($this->fileConfig)
         );
     }
 }

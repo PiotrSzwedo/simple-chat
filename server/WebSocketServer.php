@@ -36,6 +36,7 @@ class WebSocketServer implements MessageComponentInterface {
         }
 
         if (isset($data['userId']) && isset($data['message']) && $data["type"] == "message") {
+            $data['message'] = htmlspecialchars($data['message'], ENT_QUOTES, 'UTF-8');
             $this->sendMessage($from, $data);
             $this->saveMessage($data['userId'], $data['message'], $data["sender"]);
         }
