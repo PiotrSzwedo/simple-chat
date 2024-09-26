@@ -6,25 +6,25 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit("RFREQUEST_METHOD isn't post");
 }
 
-var_dump($_FILES);
+var_dump($fileConf);
 
-if (empty($_FILES)) {
+if (empty($fileConf)) {
     exit('FILES is empty');
 }
 
-if ($_FILES["file"]["error"] = UPLOAD_ERR_OK){
+if ($fileConf["file"]["error"] = UPLOAD_ERR_OK){
     exit("Upload error");
 }
 
-if ($_FILES["file"]["size"] > $config["max_size"]) {
+if ($fileConf["file"]["size"] > $config["max_size"]) {
     exit('File too large');
 }
 
-if (! in_array($_FILES["file"]["type"], $config["support_types"])){
+if (! in_array($fileConf["file"]["type"], $config["support_types"])){
     exit ("File type not support");
 }
 
-$pathinfo = pathinfo($_FILES["file"]["name"]);
+$pathinfo = pathinfo($fileConf["file"]["name"]);
 
 $base = date("Hisu", microtime(true));
 
@@ -44,7 +44,7 @@ while (file_exists($destination)) {
     $i++;
 }
 
-if ( ! move_uploaded_file($_FILES["file"]["tmp_name"], $destination)) {
+if ( ! move_uploaded_file($fileConf["file"]["tmp_name"], $destination)) {
     exit("Can't move uploaded file");
 }
 

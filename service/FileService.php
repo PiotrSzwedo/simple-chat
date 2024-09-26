@@ -15,28 +15,34 @@ class FileService{
         
         $pathinfo = pathinfo($file["file"]["name"]);
         
-        $base = date("Hisu", microtime(true));
-        
-        $base = preg_replace("/[^\w-]/", "_", $base);
-        
-        $filename = $base . "." . $pathinfo["extension"];
-        
-        $destination = __DIR__ . "/../public/". $this->config["upload_dir"] . $filename;
+        $base = preg_replace("/[^\w-]/", "_", date("Hisu", microtime(true)));
+
+        return $this->moveFile($file["file"]["tmp_name"], $pathinfo["extension"], $base);
+    }
+
+    private function moveFile(string $tmpName, string $extension, string $fileName){ 
+        $fileName = $fileName . "." . $extension;
+
+        $destination = __DIR__ . "/../public/". $this->config["upload_dir"] . $fileName;
         
         $i = 1;
         
         while (file_exists($destination)) {
         
-            $filename = $base . "($i)." . $pathinfo["extension"];
-            $destination = __DIR__ . "/../public/". $this->config["upload_dir"] . $filename;
+            $fileName = $fileName . "($i)." . $extension;
+            $destination = __DIR__ . "/../public/". $this->config["upload_dir"] . $fileName;
         
             $i++;
         }
         
-        if ( ! move_uploaded_file($file["file"]["tmp_name"], $destination)) {
-            return false;
+        if ( ! move_uploaded_file($tmpName, $destination)) {
+            return;
         }
 
-        return true;
+        return $this->config["upload_dir"] . $fileName;;
+    }
+
+    public function deleteFileWithFullPath($fileName){
+        unlink($fileName);
     }
 }

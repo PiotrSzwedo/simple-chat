@@ -3,9 +3,25 @@
 class Profile extends Controller{
 
     public function default(){
+
+        $userId = $this->sessionService->getSessionData("userId");
+
+        if ($_SERVER['REQUEST_METHOD'] === "POST"){
+
+            if (!empty($_FILES)) {
+                $file = $this->fileService->uploadFileFromArray($_FILES);
+            }
+
+            if ($file){
+                $isPhotoChanges = $this->userService->changeProfilePhoto($file, $userId);
+
+                var_dump($isPhotoChanges);
+            }
+        }
+
         $user = [];
 
-        $user[0] = $this->userService->findById($this->sessionService->getSessionData("userId"));
+        $user[0] = $this->userService->findById($userId);
         
         $profileHome = new HTMLMultiElement("profileHome", $user);
 

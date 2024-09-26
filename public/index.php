@@ -1,7 +1,7 @@
 <?php
 
     $db = require_once __DIR__.'/../config/db_conn_config.php';
-    $_FILES = require_once __DIR__."/../config/file_upload_config.php";
+    $fileConf = require_once __DIR__."/../config/file_upload_config.php";
     function loader($className) 
     {
         $dirs = [
@@ -27,5 +27,5 @@ $parsedUrl = explode('/', $_SERVER["REQUEST_URI"]);
 $router = new Router(new DatabaseService(
     $db["address"], $db["user_name"], $db["user_password"], $db["db_name"], $db["port"]
 ),
-$_FILES
+$fileConf
 );
