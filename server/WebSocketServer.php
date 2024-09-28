@@ -35,15 +35,20 @@ class WebSocketServer implements MessageComponentInterface {
             }
         }
 
-        if (isset($data['userId']) && isset($data['message']) && $data["type"] == "message") {
+        if (isset($data['userId']) && isset($data['message']) && ($data["type"] === "message" || $data["type"] === "attachment")) {
             $data['message'] = htmlspecialchars($data['message'], ENT_QUOTES, 'UTF-8');
             $this->sendMessage($from, $data);
-            $this->saveMessage($data['userId'], $data['message'], $data["sender"]);
+
+            if ($data["type"] === "attachment"){
+                $this->saveMessage($data['userId'], $data['message'], $data["sender"], true);
+            }else{
+                $this->saveMessage($data['userId'], $data['message'], $data["sender"], false);
+            }
         }
     }
 
-    private function saveMessage($user, $message, $sender) {
-        $this->messageService->send($sender, $user, $message);
+    private function saveMessage($user, $message, $sender, $attachment) {
+        $this->messageService->send($sender, $user, $message, $attachment);
     }
 
     public function onClose(ConnectionInterface $conn) {
@@ -64,7 +69,7 @@ class WebSocketServer implements MessageComponentInterface {
                 $clientData["active"] === true) {
     
                 $client->send(json_encode([
-                    'type' => 'message',
+                    'type' => $data["type"],
                     'userId' => $data['userId'],
                     'message' => $data['message'],
                     'sender' => $data['sender'],

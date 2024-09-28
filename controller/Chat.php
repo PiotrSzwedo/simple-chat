@@ -16,7 +16,13 @@ class Chat extends Controller
             $user1Id = $message["user1"];
             $recipientsId = $message["id"];
 
-            $data[] = $this->generateMsg($user1Id, $recipientsId, $message["body"], $message["user1_send"]);
+            if ($message["attachment"]){
+                $body = "<img src='" . $message["body"]. "'>";
+            }else{
+                $body = $message["body"];
+            }
+            
+            $data[] = $this->generateMsg($user1Id, $recipientsId, $body, $message["user1_send"]);
         }
 
         $element = (new HTMLElement("element", []));
@@ -64,10 +70,6 @@ class Chat extends Controller
         if (!$userId) {
             header("Location: /auth");
             return;
-        }
-    
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["message"]) && !empty($_POST["message"]) && $id) {
-            $this->messageService->send($userId, $id, $_POST["message"]);
         }
     
         $recipients = $this->messageService->getConversations($userId);

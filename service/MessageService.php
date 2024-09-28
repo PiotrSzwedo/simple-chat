@@ -74,7 +74,7 @@ class MessageService{
         return $messages ?: null;
     }
 
-    public function send($senderId, $recipientId, $message, $attachment = 0) :void{
+    public function send($senderId, $recipientId, $message, $attachment) :void{
         $data = date("yy-m-d H:i:s");
 
         if (!$this->conversationExist($senderId, $recipientId)){

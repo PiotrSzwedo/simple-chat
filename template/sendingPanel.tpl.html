@@ -1,5 +1,9 @@
 <div class="sendingPanel">
-    <form action="javascript: sendMsg()" method="post" id="messageForm">
+    <form action="javascript: sendMsg()" method="post" id="messageForm" enctype="multipart/form-data">
+        <div class="filePanel">
+            <input type="file" id="fileInput" name="file" maxlength="0">
+            <img src="/upload/img.svg" alt="image">
+        </div>
         <input type="text" placeholder="Aa" name="message"  id="messageInput" autofocus>
         <input type="hidden" name="userId" id="userInputId" value="<!--userId-->">
         <input type="hidden" name="" id="myIdInput" value="<!--senderId-->">

@@ -274,8 +274,21 @@ body{
     display: flex;
 }
 
-.chatWindow .chatValue .sendingPanel form button svg{
+.chatWindow .chatValue .sendingPanel form svg{
     fill: var(--light-blue);
+}
+
+.chatWindow .chatValue .sendingPanel .filePanel{
+    display: inherit;
+    position: relative;
+}
+
+.chatWindow .chatValue .sendingPanel .filePanel input{
+    opacity: 0;
+    width: 100%;
+    position: absolute;
+    padding: 0px;
+    height: 100%;
 }
 
 .chatWindow .chatValue .chatHeader{

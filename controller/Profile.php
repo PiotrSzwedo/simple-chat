@@ -14,8 +14,6 @@ class Profile extends Controller{
 
             if ($file){
                 $isPhotoChanges = $this->userService->changeProfilePhoto($file, $userId);
-
-                var_dump($isPhotoChanges);
             }
         }
 

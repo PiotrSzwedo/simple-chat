@@ -109,7 +109,6 @@ class UserService
     }
 
     public function changeProfilePhoto($img, $id){
-        var_dump("UPDATE user SET photo = '$img' WHERE id = '$id'");
         return $this->db->execute("UPDATE user SET photo = '$img' WHERE id = '$id'");
     }
 }

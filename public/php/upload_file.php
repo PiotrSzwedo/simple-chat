@@ -3,28 +3,31 @@
 $config = require_once __DIR__."/../../config/file_upload_config.php";
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    http_response_code(500);
     exit("RFREQUEST_METHOD isn't post");
 }
 
-var_dump($fileConf);
-
-if (empty($fileConf)) {
+if (empty($_FILES)) {
+    http_response_code(500);
     exit('FILES is empty');
 }
 
-if ($fileConf["file"]["error"] = UPLOAD_ERR_OK){
+if ($_FILES["file"]["error"] = UPLOAD_ERR_OK){
+    http_response_code(500);
     exit("Upload error");
 }
 
-if ($fileConf["file"]["size"] > $config["max_size"]) {
+if ($_FILES["file"]["size"] > $config["max_size"]) {
+    http_response_code(500);
     exit('File too large');
 }
 
-if (! in_array($fileConf["file"]["type"], $config["support_types"])){
+if (! in_array($_FILES["file"]["type"], $config["support_types"])){
+    http_response_code(500);
     exit ("File type not support");
 }
 
-$pathinfo = pathinfo($fileConf["file"]["name"]);
+$pathinfo = pathinfo($_FILES["file"]["name"]);
 
 $base = date("Hisu", microtime(true));
 
@@ -44,9 +47,8 @@ while (file_exists($destination)) {
     $i++;
 }
 
-if ( ! move_uploaded_file($fileConf["file"]["tmp_name"], $destination)) {
-    exit("Can't move uploaded file");
+if (move_uploaded_file($_FILES["file"]["tmp_name"], $destination)) {
+    http_response_code(200);
 }
 
-http_response_code(200);
-echo $destination;
+echo $config["upload_dir"] . $filename;
