@@ -3,11 +3,16 @@
         <a id="profileImg" onclick="showPhotoForm()">
             <img src=<!--photo--> alt="<!--name-->'s profile photo">
         </a>
-        <h3><!--name--></h3>
+        <form action="/profile" method="post" action="/profile">
+            <input type="hidden" name="action" value="changeName" readonly>
+            <input type="text" name="name" value="<!--name-->">
+            <button>sava</button>
+        </form>
     </div>
     <div class="photoForm">
         <button onclick="showPhotoForm()">X</button>
         <form action="/profile" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="changePhoto" readonly>
             <input type="file" name="file">
             <input type="submit" value="wgraj">
         </form>

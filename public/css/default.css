@@ -423,15 +423,14 @@ body{
 }
 
 .profile .profileHome{
+    margin: 20px 0px;
     display: flex;
     justify-content: center;
 }
 
 .profile .profileHome img{
-    border-radius: 50%;
     width: 20vw;
     height: 20vw;
-    min-width: 150px;
 }
 
 .profile .profileHome #profileImg{

@@ -1,6 +1,11 @@
 const ws = new WebSocket("ws://localhost:8080");
 let isWsOpen = false;
-const myId = document.getElementById("myIdInput").value;
+let myId = document.getElementById("myIdInput").value;
+let userScrolled = false;
+
+window.addEventListener('load', function() {
+    scrollToElementIfNotScrolled();
+});
 
 ws.onopen = () => {
     isWsOpen = true;
@@ -11,13 +16,19 @@ ws.onmessage = (jsonData) => {
     const data = JSON.parse(jsonData.data);
     const con = document.querySelector(".con");
 
-    const styleClass = (data.sender === myId) ? "my" : "";
-    
-    if (data.type === "message"){
-        con.innerHTML += `<div class='messDiv ${styleClass}'><div class='mess ${styleClass}'> ${data.message}</div></div>`;
-    }else if (data.type = "attachment"){
-        con.innerHTML += `<div class='messDiv ${styleClass}'><div class='mess ${styleClass}'><img src="${data.message}"></div></div>`;
+    if (data.sender === document.getElementById("userInputId") || data.sender === myId){
+        const styleClass = (data.sender === myId) ? "my" : "";
+        
+        if (data.type === "message"){
+            con.innerHTML += `<div class='messDiv ${styleClass}'><div class='mess ${styleClass}'> ${data.message}</div></div>`;
+        }else if (data.type = "attachment"){
+            con.innerHTML += `<div class='messDiv ${styleClass}'><div class='mess ${styleClass}'><img src="${data.message}"></div></div>`;
+        }
+    }else{
+        reloadElement(window.location.href, "#users");
     }
+
+    scrollToElementIfNotScrolled();
 };
 
 ws.onerror = (error) => { 
@@ -50,6 +61,7 @@ async function show(id) {
     await reloadElement(newUrl, "#chatValue");
     await reloadElement(newUrl, "#users");
     showMessages();
+    scrollToElementIfNotScrolled();
 }
 
 async function sendMsg() {
@@ -107,4 +119,20 @@ function showMessages() {
 const triggerElement = document.getElementById('showUsers'); 
 if (triggerElement) {
     triggerElement.addEventListener('click', showMessages);
+}
+
+function scrollToElementIfNotScrolled() {
+    const element = document.querySelector('.con');
+    
+    if (element && !userScrolled) {
+
+        element.scrollTo({
+            top: element.scrollHeight, 
+            behavior: 'smooth'
+        });
+    }
+}
+
+function handleUserScroll() {
+    userScrolled = true;
 }

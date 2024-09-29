@@ -111,4 +111,8 @@ class UserService
     public function changeProfilePhoto($img, $id){
         return $this->db->execute("UPDATE user SET photo = '$img' WHERE id = '$id'");
     }
+
+    public function changeName($name, $id){
+        return $this->db->execute("UPDATE user SET name = '$name' WHERE id = '$id'");
+    }
 }

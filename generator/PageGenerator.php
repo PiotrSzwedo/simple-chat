@@ -33,8 +33,6 @@ class PageGenerator{
     }
     
     public function generateScript($arrayOfScriptsFilesNames){
-        $arrayOfScriptsFilesNames[] = "nav";
-
         return $this->generateHTMLFromArray($arrayOfScriptsFilesNames, "script", "js");
     }
 
