@@ -26,6 +26,7 @@ class Profile extends Controller{
         $user = [];
 
         $user[0] = $this->userService->findById($userId);
+        $user[0]["save"] = $this->description["profile-save"];
         
         $profileHome = new HTMLMultiElement("profileHome", $user);
 
@@ -47,7 +48,7 @@ class Profile extends Controller{
             $profile->addKid("page", $data);
         }
 
-        $this->addTextToElement($profile, ["profile" => $this->description["profile-profile"], "security" => $this->description["profile-security"], "languages" => $this->description["profile-languages"], "back" => $this->description["profile-back"]]);
+        $this->addTextToElement($profile, ["profile" => $this->description["profile-profile"], "security" => $this->description["profile-security"], "back" => $this->description["profile-back"]]);
 
         $this->generatePage($profile, [], ["profile"]);
     }

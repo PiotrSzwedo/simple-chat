@@ -1,4 +1,4 @@
-const ws = new WebSocket("ws://localhost:8080");
+const ws = new WebSocket("ws://" + window.location.hostname +":8080");
 let isWsOpen = false;
 let myId = document.getElementById("myIdInput").value;
 let userScrolled = false;
